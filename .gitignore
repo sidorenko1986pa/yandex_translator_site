@@ -2,4 +2,5 @@
 .ruby-version
 tmp/*
 log/*
+public/assets
 
