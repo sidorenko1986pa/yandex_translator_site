@@ -1,16 +1,28 @@
+.block-authorization
+  - if logged_in?
+    p
+      = current_user.email
+    = link_to 'Выйти', logout_path, method: :delete
+  - else
+    p
+      = link_to 'Войти', login_path
+    p
+      = link_to 'Регистрация', signup_path
 .container
   .block-translator
     = simple_form_for :translator, url: root_path do |f|
       .row.lang-block
         .left-block.col-md-4
-          = f.input :lang_from, collection: @all_lang.map { |i, k| [k, i] }, label: false, input_html: { class: 'form-control' }, include_blank: false
+          = f.input :lang_from, collection: @all_lang.map { |i, k| [k, i] }, label: false, input_html: { class: 'form-control', role: 'lang_from' }, include_blank: false
         .center-block.col-md-4
           .exchange
-            = fa_icon "arrows-h exchange-text"
+            = fa_icon "arrows-h exchange-text", role: 'exchange_text'
         .right-block.col-md-4
-          = f.input :lang_to, collection: @all_lang.map { |i, k| [k, i] }, label: false, input_html: { class: 'form-control' }, include_blank: false, selected: @default_lang
+          = f.input :lang_to, collection: @all_lang.map { |i, k| [k, i] }, label: false, input_html: { class: 'form-control', role: 'lang_to' }, include_blank: false, selected: @default_lang
       .row.lang-block
         .left-block.col-md-6
-          = f.input :text_from, as: :text, label: false, input_html: { class: 'form-control', rows: 20 }
+          = f.input :text_from, as: :text, label: false, input_html: { class: 'form-control', rows: 20, role: 'text_from' }
         .right-block.col-md-6
-          = f.input :text_to, as: :text, label: false, input_html: { class: 'form-control', rows: 20 }
+          = f.input :text_to, as: :text, label: false, input_html: { class: 'form-control', rows: 20, role: 'text_to' }
+= render partial: 'history_translations/list', locals: {history_translation: @history_translation}
+= render partial: 'main'

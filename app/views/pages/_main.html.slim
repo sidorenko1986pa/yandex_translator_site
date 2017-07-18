@@ -1,0 +1,59 @@
+javascript:
+  var delay = (function(){
+    var timer = 0;
+    return function(callback, ms){
+      clearTimeout (timer);
+      timer = setTimeout(callback, ms);
+    };
+  })();
+
+  function translation(auto_lang) {
+    if ($('@text_from').val() != '') $('@text_to').val('Идет перевод...');
+    delay(function(){
+      $.ajax("pages/translation", {
+          type: 'POST',
+          data: {
+              text_from:  $('@text_from').val(),
+              lang_from:  $('@lang_from').val(),
+              lang_to:    $('@lang_to').val(),
+              auto_lang:  auto_lang
+          }
+      }).success(function(data) {
+        if (data.error) {
+          error = jQuery.parseJSON(data.error);
+          if (error.code == 502) {
+            $('@text_from').val('');
+            $('@text_to').val('');
+          } else {
+            $('@text_to').val(error.message);
+          }
+
+        } else {
+          $('@text_to').val(data.translate);
+          $('@lang_from').val(data.current_lang);
+          $('@block-history-translator').html(data.history_translation);
+        }
+      });
+    }, 500 );
+  }
+
+  jQuery(function($) {
+    $('@text_from').bind('input propertychange', function() {
+      translation(true);
+    });
+
+    $('@lang_from, @lang_to').change(function() {
+      translation(false);
+    });
+
+    $('@exchange_text').click(function() {
+      text_from = $('@text_from').val();
+      text_to = $('@text_to').val();
+      lang_from = $('@lang_from').val();
+      lang_to = $('@lang_to').val();
+      $('#translator_text_from').val(text_to);
+      $('#translator_text_to').val(text_from);
+      $('#translator_lang_from').val(lang_to);
+      $('#translator_lang_to').val(lang_from);
+    });
+  });

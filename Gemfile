@@ -35,8 +35,11 @@ gem 'ps_yandex_translator', '~> 0.1.7'
 gem 'slim'
 gem 'simple_form'
 gem 'bootstrap', git: 'https://github.com/twbs/bootstrap-rubygem'
-gem "font-awesome-rails"
-gem "json"
+gem 'font-awesome-rails'
+gem 'json'
+gem 'authlogic'
+gem 'role-rails'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

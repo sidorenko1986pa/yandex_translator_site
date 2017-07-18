@@ -17,6 +17,13 @@
  @import "bootstrap";
  @import "font-awesome";
 
+.block-authorization {
+  margin: 10px;
+  p {
+    margin: 0px
+  }
+}
+
 .block-translator {
   margin: 100px auto;
   border: 1px solid green;
@@ -39,3 +46,17 @@
   }
 }
 
+.block-history-translator {
+  p {
+    margin-left: 40px;
+  }
+  li {
+    display: inline-block;
+    padding-right: 10px;
+  }
+}
+
+.form-authorization {
+  width: 300px;
+  margin: 100px auto;
+}
