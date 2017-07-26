@@ -1,15 +1,14 @@
-.block-history-translator role='block-history-translator'
-  - if history_translation.present?
-    p История переводов
-    - history_translation.each do |item|
-        ul
-          li
-            = item.created_at.strftime("%d.%m.%Y %H:%M ")
-          li
-            = item.text_from
-          li
-            = item.text_to
-          li
-            = "#{item.lang_from} - #{item.lang_to}"
-          li
-            = item.user.email
+- if history_translation_current_user.present?
+  p.history-translator__title История переводов
+  - history_translation_current_user.each do |item|
+      ul
+        li.history-translator__item_info
+          = item.created_at.strftime("%d.%m.%Y %H:%M ")
+        li.history-translator__item_info
+          = item.text_from
+        li.history-translator__item_info
+          = item.text_to
+        li.history-translator__item_info
+          = "#{item.lang_from} - #{item.lang_to}"
+        li.history-translator__item_info
+          = item.user.email

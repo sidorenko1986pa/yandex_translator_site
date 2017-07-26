@@ -1,32 +1,35 @@
 require 'json'
 
 class PagesController < ApplicationController
+
+  helper_method :all_lang, :default_lang, :history_translation_current_user
+
   def main
-    @all_lang = YandexTranslator::Api.languages.sort_by { |key, name| name }
-    @default_lang = YandexTranslator::Api.default_lang
-    @history_translation = logged_in? ? HistoryTranslation.where(user_id: current_user).order(created_at: :desc) : nil
   end
 
   def translation
-    begin
-      if params[:auto_lang] == "true"
-        current_lang = YandexTranslator::Api.define_language(text: params[:text_from])
-        translate = YandexTranslator::Api.translate(text: params[:text_from], lang: params[:lang_to])
-      else
-        current_lang = params[:lang_from]
-        translate = YandexTranslator::Api.translate(text: params[:text_from], lang: "#{params[:lang_from]}-#{params[:lang_to]}")
-      end
-      if logged_in?
-        HistoryTranslation.create(text_from: params[:text_from], text_to: translate, lang_from: params[:lang_from], lang_to: params[:lang_to], user_id: current_user.id)
-        history_translation = render_to_string partial: "history_translations/list.html.slim", :locals => { history_translation: HistoryTranslation.where(user_id: current_user.id).order(created_at: :desc) }
-      else
-        history_translation = nil
-      end
-      result = {translate: translate, current_lang: current_lang, history_translation: history_translation}
-    rescue => error
-      result = {error: error}
+    answer = Translation.call(params: params)
+    if answer.success?
+      history_translation_list = render_to_string partial: "history_translations/list.html.slim", :locals => { history_translation_current_user: history_translation_current_user }
+      result = { translated_text: answer.translated_text, current_lang: answer.current_lang, history_translation: history_translation_list }
+    else
+      result = { error: answer.error }
     end
     render json: result
+  end
+
+  private
+
+  def all_lang
+    YandexTranslator::Api.languages.sort_by { |key, name| name }
+  end
+
+  def default_lang
+    YandexTranslator::Api.default_lang
+  end
+
+  def history_translation_current_user
+    logged_in? ? HistoryTranslation.where(user_id: current_user).order(created_at: :desc) : nil
   end
 
 end

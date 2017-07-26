@@ -1,11 +1,10 @@
-= simple_form_for @user, :url => users_path, :html=> { class: 'form-authorization' } do |f|
-  - if @user.errors.any?
-    #error_explanation
-      h2
-        = pluralize(@user.errors.count, "error")
-      ul
-        - @user.errors.full_messages.each do |msg|
-          li= msg
-
+= simple_form_for @user, :url => users_path, :html=> { class: 'form-registration' } do |f|
+  .errors
+    - if @user.errors.any?
+        h2.errors__count
+          = pluralize(@user.errors.count, "error")
+        ul.errors__messages
+          - @user.errors.full_messages.each do |msg|
+            li= msg
   = render :partial => "form", locals: {f: f}
-  = f.submit "Создать", class: 'btn btn-default'
+  = f.submit "Создать", class: 'btn btn-default form-registration__submit'

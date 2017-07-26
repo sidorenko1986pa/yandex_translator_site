@@ -1,28 +1,19 @@
-.block-authorization
-  - if logged_in?
-    p
-      = current_user.email
-    = link_to 'Выйти', logout_path, method: :delete
-  - else
-    p
-      = link_to 'Войти', login_path
-    p
-      = link_to 'Регистрация', signup_path
 .container
-  .block-translator
-    = simple_form_for :translator, url: root_path do |f|
-      .row.lang-block
-        .left-block.col-md-4
-          = f.input :lang_from, collection: @all_lang.map { |i, k| [k, i] }, label: false, input_html: { class: 'form-control', role: 'lang_from' }, include_blank: false
-        .center-block.col-md-4
-          .exchange
-            = fa_icon "arrows-h exchange-text", role: 'exchange_text'
-        .right-block.col-md-4
-          = f.input :lang_to, collection: @all_lang.map { |i, k| [k, i] }, label: false, input_html: { class: 'form-control', role: 'lang_to' }, include_blank: false, selected: @default_lang
-      .row.lang-block
-        .left-block.col-md-6
-          = f.input :text_from, as: :text, label: false, input_html: { class: 'form-control', rows: 20, role: 'text_from' }
-        .right-block.col-md-6
-          = f.input :text_to, as: :text, label: false, input_html: { class: 'form-control', rows: 20, role: 'text_to' }
-= render partial: 'history_translations/list', locals: {history_translation: @history_translation}
-= render partial: 'main'
+  .main-page
+    .translator
+      = simple_form_for :translator, url: root_path, html: {class: 'form-translator', role: 'form-translator' } do |f|
+        .row.form-translator__lang-forms
+          .lang-forms_lang-form-left.col-md-4
+            = f.input :lang_from, collection: all_lang.map { |i, k| [k, i] }, label: false, input_html: { class: 'form-control', role: 'lang-from' }, include_blank: false
+          .lang-forms_lang-form-center.col-md-4
+            .lang-forms_exchange
+              = fa_icon "arrows-h exchange-text", role: 'exchange-text'
+          .lang-forms_lang-form-right.col-md-4
+            = f.input :lang_to, collection: all_lang.map { |i, k| [k, i] }, label: false, input_html: { class: 'form-control', role: 'lang-to' }, include_blank: false, selected: default_lang
+        .row.form-translator__text-forms
+          .text-forms_form-left.col-md-6
+            = f.input :text_from, as: :text, label: false, input_html: { class: 'form-control', rows: 20, role: 'text-from' }
+          .text-forms_right-block.col-md-6
+            = f.input :text_to, as: :text, label: false, input_html: { class: 'form-control', rows: 20, role: 'text-to' }
+      .history-translator role='block-history-translator'
+        = render partial: 'history_translations/list', locals: {history_translation_current_user: history_translation_current_user}

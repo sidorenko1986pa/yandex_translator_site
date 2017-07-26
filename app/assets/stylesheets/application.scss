@@ -17,46 +17,46 @@
  @import "bootstrap";
  @import "font-awesome";
 
-.block-authorization {
+.authorization {
   margin: 10px;
-  p {
+  .authorization__link {
     margin: 0px
   }
 }
 
-.block-translator {
+.main-page {
   margin: 100px auto;
-  border: 1px solid green;
   padding: 10px;
-  .lang-block {
-    margin-bottom: 5px;
-    .left-block {
-    }
-    .center-block {
-      .exchange {
+}
+
+.translator {
+  .form-translator {
+    border: 1px solid green;
+    .lang-forms_lang-form-center {
+      .lang-forms_exchange {
         text-align: center;
+        padding-top: 5px;
         .fa-exchange-text {
           font-size: 30px;
           cursor: pointer;
         }
       }
     }
-    .right-block {
+  }
+  .history-translator {
+    .history-translator__title {
+      margin: 20px 0 10px 40px;
+    }
+    .history-translator__item_info {
+      display: inline-block;
+      padding-right: 10px;
     }
   }
 }
 
-.block-history-translator {
-  p {
-    margin-left: 40px;
-  }
-  li {
-    display: inline-block;
-    padding-right: 10px;
-  }
-}
-
-.form-authorization {
+.form-authorization, .form-registration {
   width: 300px;
   margin: 100px auto;
 }
+
+
